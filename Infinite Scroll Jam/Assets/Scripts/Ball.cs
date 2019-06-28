@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] float bounceForce;
+    [SerializeField] GameObject[] platforms;
     [SerializeField] TMP_Text scoreText;
-    [SerializeField] GameObject deathMenu;
+    [SerializeField] float bounceForce;
+    [SerializeField] float speed;
+    public GameObject deathMenu;
+    public int score;
     Rigidbody2D rb;
     Animator a;
 
@@ -18,9 +21,10 @@ public class Ball : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+
     }
 
-    int score;
 
     void Update()
     {
@@ -35,6 +39,12 @@ public class Ball : MonoBehaviour
         else if (transform.position.x < -8.75f)
         {
             transform.position = new Vector3(8.75f, transform.position.y);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.buildIndex);
         }
     }
 
@@ -61,12 +71,11 @@ public class Ball : MonoBehaviour
                 a.SetTrigger("Bounce");
             }
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        deathMenu.gameObject.SetActive(true);
-        deathMenu.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"You Scored: {score}";
-        Destroy(gameObject);
+        else if (collision.gameObject.CompareTag("Spikes"))
+        {
+            deathMenu.gameObject.SetActive(true);
+            deathMenu.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"You Scored: {score}";
+            gameObject.SetActive(false);
+        }
     }
 }

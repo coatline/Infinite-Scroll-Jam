@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BottomTrigger
   - Platform
+  - Spikes
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Ball
+  - Platform
   - 
   - 
   - 
